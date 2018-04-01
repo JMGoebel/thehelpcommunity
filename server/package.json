@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "client": "cd client && npm start",
-    "server:b": "cd server && npm run server:b",
-    "dev": "concurrently --kill-others-on-fail \"npm run server:s\" \"npm run client\"",
+    "server": "nodemon dist/server_bundle.js",
+    "server:w": "webpack --watch",
+    "server:b": "webpack",
+    "dev": "concurrently --kill-others-on-fail \"npm run server:w\" \"npm run server\"",
     "db": "mongod --dbpath=./data"
   },
   "dependencies": {
@@ -19,6 +20,7 @@
     "babel-preset-env": "^1.6.1",
     "concurrently": "^3.5.1",
     "webpack": "^4.4.1",
-    "webpack-cli": "^2.0.13"
+    "webpack-cli": "^2.0.13",
+    "webpack-node-externals": "^1.6.0"
   }
 }
