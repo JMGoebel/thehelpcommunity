@@ -1,16 +1,32 @@
 const express = require('express');
-import db from './db';
+const mongo = require('mongodb').MongoClient;
 
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.get('/api/hello', (req, res) => {
-  res.send({ express: 'Hello From Express' });
-});
+// Connection URL
+const url = 'mongodb://localhost:27017/thc-cluster';
+// Database Name
+const dbName = 'thc-cluster';
+let conn;
+let db;
 
-app.get('/test', (req, res) => {
-  const call = async () => await db.testConnection();
-  res.send(call())
-});
- 
-app.listen(port, () => console.log(`Listening on port ${port}`));
+app.get('/api/users', (req, res) => {
+  db.collection('users')
+    .find({})
+    .toArray()
+    .then( users => res.send(users) )
+    .catch( err => res.send(err) );
+})
+
+app.post('/api/users', (req, res) => {
+
+})
+
+mongo.connect(url)
+  .then( connection => {
+    conn = connection;
+    db = conn.db(dbName);
+    app.listen(port, () => console.log(`Listening on port ${port}`));
+  })
+  .catch( err => console.log(err) );

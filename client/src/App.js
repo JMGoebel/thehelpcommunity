@@ -4,21 +4,19 @@ import './App.css';
 
 class App extends Component {
   state = {
-    response: ''
+    response: []
   };
  
   componentDidMount() {
     this.callApi()
-      .then(res => this.setState({ response: res.express }))
+      .then(res => this.setState({ response: res }))
       .catch(err => console.log(err));
   }
 
   callApi = async () => {
-    const response = await fetch('./api/hello');
+    const response = await fetch('./api/users');
     const body = await response.json();
-
     if (response.status !== 200) throw Error(body.message);
-    console.log(body)
     return body;
   };
 
@@ -30,9 +28,13 @@ class App extends Component {
           <h1 className="App-title">Welcome to React</h1>
         </header>
         <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
+          View data
         </p>
-        <p>{this.state.response}</p>
+        <ul>
+          {
+            this.state.response.map( obj => <li>{obj.name}</li> )
+          }
+        </ul>
       </div>
     );
   }
